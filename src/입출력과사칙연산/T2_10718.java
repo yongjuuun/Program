@@ -1,4 +1,4 @@
-package 입출력과사칙연산;
+package BaekJoonCodingTest.src.입출력과사칙연산;
 
 public class T2_10718 {
     public static void main(String[] args) {

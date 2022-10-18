@@ -1,4 +1,4 @@
-package 입출력과사칙연산;
+package BaekJoonCodingTest.src.입출력과사칙연산;
 
 import java.util.Scanner;
 
