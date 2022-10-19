@@ -1,4 +1,4 @@
-package BaekJoonCodingTest.src.입출력과사칙연산;
+package 입출력과사칙연산;
 // 새싹
 
 public class T15_25083 {
