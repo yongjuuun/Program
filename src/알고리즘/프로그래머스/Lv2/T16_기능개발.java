@@ -9,7 +9,6 @@ public class T16_기능개발 {
         int[] progresses = {40, 93, 30, 55, 60, 65};
         int[] speeds = {60, 1, 30, 5 , 10, 7};
 
-        ArrayList<Integer> al = new ArrayList<>();
         Deque<Integer> dq = new ArrayDeque<>();
 
 //      # 남은 날 = (100 - progresses) / speeds 이 100이상이 되는날
@@ -17,6 +16,7 @@ public class T16_기능개발 {
             dq.add((int) (Math.ceil((100.0 - progresses[i]) / speeds[i])));
         }
 
+        ArrayList<Integer> al = new ArrayList<>();
         while (!dq.isEmpty()) {
             int cnt = 1;
             int day = dq.poll();
