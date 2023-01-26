@@ -1,7 +1,9 @@
-import java.util.*;
+package etc;
 
-// 1.
-public class Test {
+import java.util.ArrayList;
+import java.util.Random;
+
+public class Test1 {
     ArrayList<Integer> save = new ArrayList<>();
 
     // 활용 용도..
@@ -46,7 +48,7 @@ public class Test {
     }
 
     public static void main(String[] args) {
-        Test test = new Test();
+        Test1 test = new Test1();
         test.insert(1);
         test.insert(2);
         test.insert(3);
