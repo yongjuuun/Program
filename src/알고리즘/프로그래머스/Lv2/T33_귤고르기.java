@@ -21,6 +21,7 @@ public class T33_귤고르기 {
         ArrayList<Integer> al = new ArrayList<>(hm.keySet());
         System.out.println(hm.keySet());
 
+        // O(N log N)
         al.sort(((o1, o2) -> hm.get(o2) - hm.get(o1)));     // * 정렬 방법 참고
 
         // O(N)

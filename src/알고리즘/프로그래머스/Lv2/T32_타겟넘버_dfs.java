@@ -1,6 +1,6 @@
 package 알고리즘.프로그래머스.Lv2;
 
-public class T32_타겟넘버_2 {
+public class T32_타겟넘버_dfs {
     static int[] numbers = {1, 1, 1, 1, 1};
     static int target = 3;
     static int answer = 0;
@@ -25,5 +25,4 @@ public class T32_타겟넘버_2 {
 
         return answer;
     }
-
 }

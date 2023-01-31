@@ -1,14 +1,13 @@
 package 알고리즘.프로그래머스.Lv2;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.PriorityQueue;
 
 public class T35_더맵게 {
     public static void main(String[] args) {
         int[] scoville = {1, 2, 3, 9, 10, 12};
-        int k = 7;
+        int K = 7;
 
+        int answer = 0;
         PriorityQueue<Integer> pq = new PriorityQueue<>();
 
         for (int x : scoville) {
@@ -17,9 +16,26 @@ public class T35_더맵게 {
 
         int firstMin = 0;
         int secondMin = 0;
-        for (int i = 0; i < pq.size(); i++) {
+        int mixScov = 0;
+        while (pq.size() >= 2) {
+            if (pq.peek() >= K) {
+                break;
+            }
+
             firstMin = pq.poll();
+            secondMin = pq.poll();
+
+            mixScov = firstMin + (secondMin * 2);
+
+            pq.add(mixScov);
+
+            answer++;
+
+            if (pq.size() < 2 && mixScov < K) {
+                answer = -1;
+            }
         }
-        System.out.println(firstMin);
+
+        System.out.println(answer);
     }
 }

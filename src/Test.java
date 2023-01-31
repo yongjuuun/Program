@@ -1,23 +1,34 @@
 import java.util.*;
 
-// 1.
+// HashMap key 값에 v, value 값에 arr 배열의 index 입력하고
+// arr 배열에 인덱스 하나씩 +,- 해주면서 값 입력 해주기?
+// 배열의 크기, 선언
+
 public class Test {
-    ArrayList<Integer> save = new ArrayList<>();
+    HashMap<Integer, Integer> hash = new HashMap<>();
+    int[] temp = new int[5];
+    int index = 0;
+
+    int x = 0;
 
     // 활용 용도..
 //    public Test() {
 //    }
 
-    public boolean insert(int value) {
+    public boolean insert(int v) {
         boolean result = false;
 
-        if (save.contains(value)) {
+        if (hash.containsKey(v)) {
             result = false;
         } else {
+            index++;
+            int[] arr = new int[index];   // 배열 크기 정하는 부분
+            hash.put(v, index - 1);
+            arr[index - 1] = v;
             result = true;
         }
 
-        System.out.println(value + " insert result : " + result);
+        System.out.println(v + " insert result : " + result);
 
         return result;
     }
@@ -25,7 +36,10 @@ public class Test {
     public boolean remove(int value) {
         boolean result = false;
 
-        if(save.contains(value)) {
+        if (hash.containsKey(value)) {
+            index--;
+            int[] arr = new int[index];   // 배열 크기 정하는 부분
+            hash.remove(value);
             result = true;
         } else {
             result = false;
@@ -38,17 +52,20 @@ public class Test {
 
     public int getRandom() {
         Random random = new Random();
-        int randomNUm = random.nextInt(20);
+        int[] arr = new int[index];   // 배열 크기 정하는 부분
+        int randomNum = arr[random.nextInt(arr.length)];
 
-        System.out.println("Random Num : " + randomNUm);
+        System.out.println("Random Num : " + randomNum);
 
-        return randomNUm;
+        return randomNum;
     }
 
     public static void main(String[] args) {
         Test test = new Test();
         test.insert(1);
         test.insert(2);
+        test.insert(3);
+        test.remove(1);
         test.insert(3);
         test.remove(1);
         test.insert(test.getRandom());
