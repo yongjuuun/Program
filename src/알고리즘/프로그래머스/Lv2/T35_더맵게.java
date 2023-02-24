@@ -14,9 +14,9 @@ public class T35_더맵게 {
             pq.add(x);
         }
 
-        int firstMin = 0;
-        int secondMin = 0;
-        int mixScov = 0;
+        int firstMin;
+        int secondMin;
+        int mixScov;
         while (pq.size() >= 2) {
             if (pq.peek() >= K) {
                 break;

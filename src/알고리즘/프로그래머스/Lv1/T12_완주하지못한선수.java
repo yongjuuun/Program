@@ -2,7 +2,7 @@ package 알고리즘.프로그래머스.Lv1;
 
 import java.util.Arrays;
 
-public class T_완주하지못한선수 {
+public class T12_완주하지못한선수 {
     public static void main(String[] args) {
 //        String[][] clothes = new String[][] {{"yellow_hat", "headgear"}, {"blue_sunglasses", "eyewear"}, {"green_turban", "headgear"}};
         String[] participant = {"marina", "josipa", "nikola", "vinko", "filipa"};

@@ -1,8 +1,9 @@
-package etc;
+package 알고리즘.etc;
 
 import java.util.ArrayList;
 import java.util.Random;
 
+// O(1) 으로 insert, remove, random 명령에 대한 결과 출력하기
 public class Test1 {
     ArrayList<Integer> save = new ArrayList<>();
 

@@ -5,71 +5,63 @@ import java.util.*;
 // 배열의 크기, 선언
 
 public class Test {
-    HashMap<Integer, Integer> hash = new HashMap<>();
-    int[] temp = new int[5];
-    int index = 0;
-
-    int x = 0;
+    HashMap<Integer, Integer> hash = new HashMap<>();   // key = 입력 값, value = arraylist 의 index
+    int[] array = new int[0];
 
     // 활용 용도..
 //    public Test() {
 //    }
 
     public boolean insert(int v) {
-        boolean result = false;
-
         if (hash.containsKey(v)) {
-            result = false;
-        } else {
-            index++;
-            int[] arr = new int[index];   // 배열 크기 정하는 부분
-            hash.put(v, index - 1);
-            arr[index - 1] = v;
-            result = true;
+            System.out.println(v + " insert false");
+            return false;
         }
 
-        System.out.println(v + " insert result : " + result);
+        array = Arrays.copyOf(array, array.length + 1);
+        array[array.length - 1] = v;
+        hash.put(v, array.length - 1);
 
-        return result;
+        System.out.println(v + " insert true");
+        return true;
     }
 
-    public boolean remove(int value) {
-        boolean result = false;
-
-        if (hash.containsKey(value)) {
-            index--;
-            int[] arr = new int[index];   // 배열 크기 정하는 부분
-            hash.remove(value);
-            result = true;
-        } else {
-            result = false;
+    public boolean remove(int v) {
+        if (!hash.containsKey(v)) {
+            System.out.println(v + " remove false");
+            return false;
         }
 
-        System.out.println(value + " remove result : " + result);
+        int index = hash.get(v);
+        hash.remove(v); // ok
 
-        return result;
+        array[index] = array[array.length - 1]; // 제거하는 자리에 가장 마지막 값 입력
+
+        hash.put(array[index], index);
+        array = Arrays.copyOf(array, array.length - 1);
+        System.out.println(v + " remove true");
+        return true;
     }
 
     public int getRandom() {
         Random random = new Random();
-        int[] arr = new int[index];   // 배열 크기 정하는 부분
-        int randomNum = arr[random.nextInt(arr.length)];
 
-        System.out.println("Random Num : " + randomNum);
+        int randomNum = array[random.nextInt(hash.size())];
+
+        System.out.println("randomNum : " + randomNum);
 
         return randomNum;
     }
 
     public static void main(String[] args) {
         Test test = new Test();
-        test.insert(1);
-        test.insert(2);
-        test.insert(3);
-        test.remove(1);
-        test.insert(3);
-        test.remove(1);
-        test.insert(test.getRandom());
-        test.remove(test.getRandom());
+        test.insert(1);     // 1        ture
+        test.insert(2);     // 1, 2     ture
+        test.insert(3);     // 1, 2, 3  true
+        test.remove(1);     // 2, 3     true
+        test.insert(3);     // 2, 3     false
+        test.remove(1);     // 2, 3     false
+        test.remove(test.getRandom());  // 2 or 3 remove
 
 //        ex)
         // O(1)
