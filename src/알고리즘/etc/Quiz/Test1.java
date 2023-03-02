@@ -1,4 +1,4 @@
-package 알고리즘.etc;
+package 알고리즘.etc.Quiz;
 
 import java.util.ArrayList;
 import java.util.Random;
