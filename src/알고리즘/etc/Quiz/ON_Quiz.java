@@ -1,15 +1,16 @@
-import java.util.*;
+package 알고리즘.etc.Quiz;
 
-// HashMap key 값에 v, value 값에 arr 배열의 index 입력하고
-// arr 배열에 인덱스 하나씩 +,- 해주면서 값 입력 해주기?
-// 배열의 크기, 선언
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Random;
 
-public class Test {
+// O(1) 으로 insert, remove, random 명령에 대한 결과 출력하기
+public class ON_Quiz {
     HashMap<Integer, Integer> hash = new HashMap<>();   // key = 입력 값, value = arraylist 의 index
     int[] array = new int[0];
 
     // 활용 용도..
-//    public Test() {
+//    public ON_Quiz() {
 //    }
 
     public boolean insert(int v) {
@@ -54,7 +55,7 @@ public class Test {
     }
 
     public static void main(String[] args) {
-        Test test = new Test();
+        ON_Quiz test = new ON_Quiz();
         test.insert(1);     // 1        ture
         test.insert(2);     // 1, 2     ture
         test.insert(3);     // 1, 2, 3  true
