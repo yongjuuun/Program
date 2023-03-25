@@ -527,21 +527,78 @@ User user3 = new User(1L, "dale", "1234", null);   // @AllArgsConstructor
 - @RequestMapping
     - @RequestMapping(value=””) 의 형태로 사용하며, URI의 요청과 어노테이션 값이 일치하면 해당 메소드나 클래스가 실행된다.
 
-### 스프링 시큐리티 (Spring Security)
+
+
+## 스프링 시큐리티 (Spring Security)
 
 - 스프링 기반의 어플레케이션의 보안(인증과 권한, 인가 등)을 담당하는 스프링 하위 프레임워크 입니다.
+- ‘인증’과 ‘권한’에 대한 부분을 Filter 흐름에 따라 처리합니다.
 - 접근주체(Principal): 보호된 리소스에 접근하는 대상입니다.
-- 인증(Authentication) : 애플리케이션의 작업을 수행할 수 있는 주체(사용자)라고 주장할 수 있는것을 말합니다.
+
+### 용어
+
+- 인증(Authentication) : 해당 사용자가 본인이 맞는지를 확인하는 절차입니다.
+- 인가(Authorization) : 인증 된 사용자가 요청한 자원에 접근 가능한지 결정하는 절차입니다.
+- 접근 주체(Principal) : 보호받는 자원에 접근하는 대상입니다.
+- 비밀번호(Credential) : 자원에 접근하는 대상의 비밀번호
+- 권한 : 인증된 주체가 동작을 수행할 수 있도록 허락되어 있는지 결정
+- 순서
+    - 인증 절차 → 인가 절차 → 인가 과정에서 해당 자원에 대한 접근 권한 확인
+    - 인증, 인가를 위해 Pricipal(아이디), Credential(비밀번호) 를 통한 인증 방식 사용
+
+### Form Login 절차
+
+1. 요청 수신
+    - 사용자가 form을 통해 로그인 정보가 담긴 Request 를 보낸다.
+2. 토큰 생성
+    - AuthenticationFilter가 요청을 받아서 UsernamePasswordAuthenticationToken토큰(인증용 객체)을 생성한다.
+    - UsernamePasswordAuthenticationToken은 해당 요청을 처리할 수 있는 Provider 를 찾는데 사용한다.
+3. AuthenticationFilter로 부터 인증용 객체를 전달 받는다.
+    - Authentication Manager 에게 처리를 위임한다.
+    - Authentication Manager는 List 형태로 Provider 들을 갖고 있다.
+4. Token을 처리할 수 잇는 Authentication Provider 선택
+    - 실제 인증을 할 AuthenticationProvider 에게 인증용 객체를 다시 전달한다.
+5. 인증 절차
+    - 인증 절차가 시작되면 AuthenticationProvider 인터페이스가 실행되고 DB에 있는 사용자의 정보와 화면에서 입력한 로그인 정보를 비교한다.
+6. UserDetailsService 의 loadUserByUsername 메소드 수행
+    - AuthenticationProvider 인터페이스에서는 authenticate() 메소드를 오버라이딩 하게 되는데 이 메소드의 파라미터인 인증용 객체를 화면에서 입력한 로그인 정보를 가져올 수 있다.
+7. AuthenticationProvider 인터페이스에서 DB에 있는 사용자의 정보를 가져오려면, UserDetailsService 인터페이스를 사용한다.
+8. UserDetaisService 인터페이스는 화면에서 입력한 사용자의 userName 으로 loadUserByUsername() 메소드를 호출하여 DB에 있는 사용자의 정보를 UserDetails 형으로 가져온다. 사용자가 존재하지 않으면 예외를 던진다. 이렇게 DB에서 가져온 이용자의 정보와 화면에서 입력한 로그인 정보를 비교하고, 일치하면 Authentication 참조를 리턴하고, 아니면 예외를 던진다.
+9. 인증이 완료되면 사용자 정보를 가진 Authentication 객체를 SecurityContextHolder에 담은 이후 AuthenticationSuccessHandle를 실행한다. (실패하면 AuthenticationFailureHandler를 실행한다.)
+
+### Filter
+
+1. (UsernamePassword)AuthenticationFilter
+    - 아이디와 비밀번호를 사용하는 form 기반 인증
+    - 로그인 url로 오는 요청을 감시하며, 유저 인증 처리인 AuthenticationManager 를 통한 인증을 실행합니다.
+    - 인증 성공이 되면 인증용 객체를 SecurityContext에 저장 후 AuthenticationSuccessHandler 을 실행합니다. (실패하면 AuthenticationFailureHandler를 실행)
+2. AuthenticationProvider
+    - 화면에서 입력한 로그인 정보와 DB 정보를 비교합니다.
+    - security-context에 provider로 등록한 후 인증절차를 구현합니다.
+    - login view 에서 login -processing-url로의 form  action 진행 시 해당 클래스의 supprots() → authenticate() 순으로 인증 절차 진행
+3. UserDetailsService
+    - DB에서 유저 정보를 가져오는 역할
+4. UserDetails
+    - 사용자의 정보를 담는 인터페이스로 직접 상속받아 사용합니다.
 
 - **@EnableWebSecurity**
+    - Spring Security를 웹 보안 구성을 위해 사용할 때, 이 어노테이션을 사용하여 Spring Security 구성을 활성화할 수 있습니다.
     - configure(WebSecurity)
         - 스프링 시큐리티의 필터 연결을 설정하기 위한 오버라이딩 입니다.
     - configure(HttpSecurity)
+        - Http 요청을 보호하는데 사용됩니다.
         - 인터셉터로 요청을 안전하게 보호하는 방법을 설정하기 위한 오버라이딩 입니다.
         - 가장 많이 사용하는 객체
     - configure(AuthenticationManagerBuilder)
         - 사용자 세부 서비스를 설정하기 위한 오버라이딩 입니다.
         - 다양한 인증관리자를 생성해주는 빌더이고 메모리 기반 인증, 데이터베이스 인증 등 다양한 인증 관리자를 생성해줍니다.
+- @Secured
+    - 메서드나 클래스에 사용되며, 지정된 역할(권한)을 가진 사용자만 해당 메서드나 클래스에 접근할 수 있도록 보호합니다.
+- @AuthenticationPrincipal
+    - 컨트롤러에서 현재 인증된 사용자의 정보에 쉽게 엑세스할 수 있도록 합니다.
+
+
+
 
 Istio
 
